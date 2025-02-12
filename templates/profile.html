@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile - DisabledIn</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f7fa;
+        }
+
+        /* Navbar */
+        .navbar {
+            background-color: #0077b5;
+        }
+
+        .navbar-brand,
+        .navbar-nav .nav-link {
+            color: white !important;
+            font-weight: bold;
+        }
+
+        .navbar-nav .nav-link:hover {
+            color: #f0f0f0 !important;
+        }
+
+        /* Profile Section */
+        .profile-section {
+            padding: 50px 0;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            margin-top: 30px;
+        }
+
+        h1, h4 {
+            color: #0077b5;
+            font-weight: bold;
+        }
+
+        /* Job Cards */
+        .job-card,
+        .company-card {
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            margin-bottom: 20px;
+            transition: transform 0.2s ease-in-out;
+        }
+
+        .job-card:hover,
+        .company-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .job-card h5,
+        .company-card h5 {
+            color: #0077b5;
+            font-weight: bold;
+        }
+
+        /* Assistive Features */
+        .assistive-section {
+            margin: 30px 0;
+        }
+
+        .assistive-section h2 {
+            font-weight: bold;
+            margin-bottom: 20px;
+            color: #0077b5;
+        }
+
+        .assistive-section .btn {
+            padding: 10px 20px;
+            border-radius: 30px;
+        }
+
+        .footer {
+            background-color: #0077b5;
+            color: white;
+            text-align: center;
+            padding: 20px 0;
+            margin-top: 30px;
+        }
+
+        .footer a {
+            color: white;
+            text-decoration: none;
+            margin: 0 10px;
+        }
+
+        .footer a:hover {
+            text-decoration: underline;
+        }
+
+        /* Buttons */
+        .btn-danger {
+            background-color: #dc3545;
+            border: none;
+            font-weight: bold;
+            border-radius: 50px;
+            transition: all 0.3s;
+        }
+
+        .btn-danger:hover {
+            background-color: #c82333;
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#"><i class="bi bi-wheelchair"></i> DisabledIn</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="/articles">Articles</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/people">People</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/jobs">Jobs</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/learning">Learning</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/history">History</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/settings">Settings</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/logout">Log Out</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Profile Section -->
+    <div class="container mt-5 profile-section">
+        <h1 class="text-center mb-4">Welcome, {{ user.name }}</h1>
+        <div class="user-info mb-4">
+            <h4>Your Information</h4>
+            <p><strong>Email:</strong> {{ user.email }}</p>
+            <p><strong>Disability:</strong> {{ user.disability }}</p>
+            <p><strong>Job Field Interest:</strong> {{ user.job_field_interest }}</p>
+            <p><strong>Skills:</strong> {{ user.skills }}</p>
+        </div>
+
+        <!-- Jobs Section -->
+        <h4>Available Jobs</h4>
+        {% for job in available_jobs %}
+        <div class="job-card">
+            <h5>{{ job.title }}</h5>
+            <p>Description: {{ job.description }}</p>
+            <p>Compatibility: {{ job.match_percentage }}</p>
+        </div>
+        {% endfor %}
+
+        <!-- Company Section -->
+        <div class="company-card mt-4">
+            <h4>Optimal Company</h4>
+            {% if optimal_company %}
+            <h5>{{ optimal_company.name }}</h5>
+            <p>Job Field: {{ optimal_company.job_field }}</p>
+            <p>Rating: {{ optimal_company.rating }}</p>
+            <p>Location: {{ optimal_company.address }}</p>
+            {% else %}
+            <p>No optimal company found.</p>
+            {% endif %}
+        </div>
+
+        <!-- Logout Button -->
+        <div class="text-center">
+            <a href="/logout" class="btn btn-danger mt-4">Logout</a>
+        </div>
+    </div>
+
+    <!-- Assistive Features Section -->
+    <section class="assistive-section text-center py-5">
+        <div class="container">
+            <h2>Assistive Features</h2>
+            <div class="row justify-content-center">
+                <!-- Text-to-Speech -->
+                <div class="col-md-5">
+                    <h4>Text-to-Speech</h4>
+                    <input type="text" id="ttsInput" class="form-control mb-2" placeholder="Enter text for TTS">
+                    <button class="btn btn-primary" onclick="sendTTS()">Speak</button>
+                </div>
+
+                <!-- Speech-to-Text -->
+                <div class="col-md-5">
+                    <h4>Speech-to-Text</h4>
+                    <button class="btn btn-success" onclick="startSTT()">Start Listening</button>
+                    <p class="mt-2">Transcribed Text: <span id="sttOutput" class="text-muted"></span></p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>&copy; 2024 DisabledIn | <a href="#">About</a> | <a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a></p>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DisabledIn - Jobs Home</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f7fa;
+            line-height: 1.6;
+        }
+
+        .navbar {
+            background-color: #0077b5;
+            padding: 10px 20px;
+        }
+
+        .navbar-brand {
+            color: white !important;
+            font-weight: bold;
+            font-size: 1.8rem;
+        }
+
+        .navbar-nav .nav-link {
+            color: white !important;
+            font-size: 1rem;
+        }
+
+        .navbar-nav .nav-link:hover {
+            color: #f0f0f0 !important;
+        }
+
+        .categories-section {
+            background-color: #fff;
+            padding: 60px 20px;
+        }
+
+        .categories-section h2 {
+            font-size: 2rem;
+            color: #333;
+            margin-bottom: 40px;
+            text-align: center;
+        }
+
+        .category-card {
+            text-align: center;
+            padding: 30px 20px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            margin: 15px;
+            transition: all 0.3s ease-in-out;
+            text-decoration: none;
+            display: block;
+        }
+
+        .category-card:hover {
+            background-color: #f0f0f0;
+            transform: translateY(-5px);
+        }
+
+        .category-card h5 {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .job-list {
+            background-color: #f9f9f9;
+            padding: 60px 20px;
+        }
+
+        .job-list h2 {
+            font-size: 2rem;
+            color: #333;
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .job-card {
+            background-color: #fff;
+            border-radius: 12px;
+            box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.1);
+            padding: 25px;
+            margin-bottom: 25px;
+            transition: all 0.3s ease-in-out;
+        }
+
+        .job-card:hover {
+            box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.15);
+            transform: translateY(-5px);
+        }
+
+        .job-card h5 {
+            font-size: 1.4rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #0077b5;
+        }
+
+        .job-card p {
+            font-size: 1rem;
+            color: #555;
+        }
+
+        .footer {
+            background-color: #0077b5;
+            color: white;
+            text-align: center;
+            padding: 30px 20px;
+        }
+
+        .footer p {
+            margin: 0;
+            font-size: 0.9rem;
+        }
+
+        .footer a {
+            color: white;
+            text-decoration: none;
+        }
+
+        .footer a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#"><i class="bi bi-wheelchair"></i> DisabledIn</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="#">Articles</a></li>
+                    <li class="nav-item"><a class="nav-link" href="analytics">People</a></li>
+                    <li class="nav-item"><a class="nav-link" href="jobs.html">Jobs</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#">Learning</a></li>
+                    <li class="nav-item"><a class="nav-link" href="register_company">For Companies</a></li>
+                    <li class="nav-item"><a class="nav-link" href="login">Log In</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Categories Section -->
+    <section class="categories-section">
+        <div class="container mb-4">
+            <form action="/search_companies" method="get" class="d-flex justify-content-center">
+                <input type="text" name="query" class="form-control w-50" placeholder="Search for companies..." />
+                <button type="submit" class="btn btn-primary ms-2">Search</button>
+            </form>
+        </div>
+    </section>
+    
+    <section class="categories-section">
+        <div class="container">
+            <h2>Explore Career Fields</h2>
+            <div class="row justify-content-center">
+                <div class="col-md-3">
+                    <a href="{{ url_for('show_jobs', category='all') }}" class="category-card">
+                        <h5>All Jobs</h5>
+                    </a>
+                </div>
+                {% for category in categories %}
+                <div class="col-md-3">
+                    <a href="{{ url_for('show_jobs', category=category.job_field) }}" class="category-card">
+                        <h5>{{ category.job_field }}</h5>
+                    </a>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+    
+    <section class="job-list">
+        <div class="container">
+            <h2>All Companies</h2>
+            <div class="row">
+                {% if jobs %}
+                {% for job in jobs %}
+                <div class="col-md-4">
+                    <a href="#" class="text-decoration-none">
+                        <div class="card job-card">
+                            <h5>{{ job.company.name }}</h5>
+                            <p><strong>Job Field:</strong> {{ job.job_field }}</p>
+                            <p><strong>Required Skills:</strong> {{ job.required_skills }}</p>
+                        </div>
+                    </a>
+                </div>
+                {% endfor %}
+                {% else %}
+                <div class="col-12 text-center">
+                    <p>No companies available currently.</p>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </section>
+
+
+
+    <!-- Footer Section -->
+    <footer class="footer">
+        <p>&copy; 2024 DisabledIn</p>
+        <p>
+            <a href="#">About</a> | 
+            <a href="#">Privacy Policy</a> | 
+            <a href="#">Terms of Service</a>
+        </p>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

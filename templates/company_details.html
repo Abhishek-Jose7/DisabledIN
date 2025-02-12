@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ company.name }}</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container mt-5">
+        <h1>{{ company.name }}</h1>
+        <p><strong>Job Field:</strong> {{ company.job_field }}</p>
+        <p><strong>Address:</strong> {{ company.address }}</p>
+        <p><strong>Rating:</strong> {{ company.rating }} / 5</p>
+        <p><strong>Accessibility and Amenities:</strong> {{ company.amenities }}</p>
+        <p><strong>Employee Reviews:</strong></p>
+        <pre>{{ company.reviews }}</pre>
+        <a href="/" class="btn btn-secondary mt-3">Back to Home</a>
+    </div>
+</body>
+</html>

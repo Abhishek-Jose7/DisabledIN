@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register - DisabledIn</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #0077b5;
+            --secondary-color: #5693f0;
+            --bg-light: #f4f7fa;
+            --text-dark: #333;
+        }
+
+        body {
+            font-family: 'Inter', 'Arial', sans-serif;
+            background-color: var(--bg-light);
+            margin: 0;
+            padding: 0;
+            color: var(--text-dark);
+            line-height: 1.6;
+        }
+
+        .navbar {
+            background-color: var(--primary-color);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .navbar-brand {
+            color: white !important;
+            font-weight: 800;
+            font-size: 1.9rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .navbar-brand i {
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .navbar-nav .nav-link {
+            color: white !important;
+            font-weight: 600;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .navbar-nav .nav-link:hover {
+            color: rgba(255,255,255,0.8) !important;
+            transform: translateY(-2px);
+        }
+
+        .navbar-nav .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -5px;
+            left: 50%;
+            background-color: white;
+            transition: width 0.3s ease;
+            transform: translateX(-50%);
+        }
+
+        .navbar-nav .nav-link:hover::after {
+            width: 100%;
+        }
+
+        .hero-section {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 120px 0;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at 20% 50%, rgba(255,255,255,0.1), transparent 50%);
+            pointer-events: none;
+        }
+
+        .hero-section h1 {
+            font-size: 3.8rem;
+            font-weight: 900;
+            letter-spacing: -1px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .hero-section p {
+            font-size: 1.3rem;
+            font-weight: 300;
+            max-width: 800px;
+            margin: 20px auto;
+            opacity: 0.9;
+        }
+
+        .register-section {
+            background-color: #fff;
+            padding: 50px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            max-width: 900px;
+            margin: 60px auto;
+            transition: all 0.3s ease;
+        }
+
+        .register-section:hover {
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.12);
+            transform: translateY(-5px);
+        }
+
+        .register-section h2 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--primary-color);
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .form-label {
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+
+        .form-control {
+            border-radius: 12px;
+            padding: 12px 15px;
+            border: 2px solid #e0e0e0;
+            transition: all 0.3s ease;
+        }
+
+        .form-control:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 0.25rem rgba(0, 119, 181, 0.25);
+        }
+
+        #map {
+            height: 450px;
+            border-radius: 15px;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+            border: 3px solid var(--primary-color);
+            transition: all 0.3s ease;
+        }
+
+        #map:hover {
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        button {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            transition: all 0.4s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        button:hover {
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .footer {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            text-align: center;
+            padding: 30px 0;
+            font-size: 0.95rem;
+        }
+
+        .footer a {
+            color: rgba(255,255,255,0.8);
+            text-decoration: none;
+            margin: 0 10px;
+            transition: color 0.3s ease;
+        }
+
+        .footer a:hover {
+            color: white;
+            text-decoration: underline;
+        }
+
+        @media (max-width: 768px) {
+            .hero-section h1 {
+                font-size: 2.8rem;
+            }
+            
+            .register-section {
+                padding: 30px;
+                margin: 30px 15px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Navigation Bar -->
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#"><i class="bi bi-wheelchair"></i> DisabledIn</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Articles</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="analytics">People</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="company_details">Jobs</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Learning</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="register_company">For Companies</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="login">Log In</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <div class="container">
+            <h1>Register for DisabledIn</h1>
+            <p>Join us and empower yourself with job opportunities tailored for people with disabilities. Your unique skills and potential are our priority.</p>
+        </div>
+    </section>
+
+    <!-- Register Section -->
+    <div class="container register-section">
+        <h2>Create Your Account</h2>
+        <form action="/register" method="post" class="needs-validation" novalidate>
+            <!-- Personal Information Section -->
+            <div class="row g-4">
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <label for="name" class="form-label">Name:</label>
+                        <input type="text" class="form-control" id="name" name="name" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Email:</label>
+                        <input type="email" class="form-control" id="email" name="email" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="password" class="form-label">Password:</label>
+                        <input type="password" class="form-control" id="password" name="password" required>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <label for="disability" class="form-label">Disability:</label>
+                        <input type="text" class="form-control" id="disability" name="disability" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="job_field_interest" class="form-label">Job Field Interest:</label>
+                        <input type="text" class="form-control" id="job_field_interest" name="job_field_interest" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="skills" class="form-label">Skills:</label>
+                        <input type="text" class="form-control" id="skills" name="skills" placeholder="Comma-separated" required>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Map Section -->
+            <div class="mb-4">
+                <label class="form-label">Select your location on the map:</label>
+                <div id="map"></div>
+                <input type="hidden" id="latitude" name="latitude">
+                <input type="hidden" id="longitude" name="longitude">
+            </div>
+
+            <!-- Submit Button -->
+            <button type="submit" class="btn btn-primary w-100 py-3">Create Account</button>
+        </form>
+    </div>
+    <section class="text-speech-section py-5">
+        <div class="container">
+            <h2 class="text-center mb-4">Assistive Features</h2>
+            <div class="row">
+                <!-- Text-to-Speech Feature -->
+                <div class="col-md-6 text-center">
+                    <h4>Text-to-Speech</h4>
+                    <input type="text" id="ttsInput" class="form-control mb-3" placeholder="Enter text for TTS">
+                    <button class="btn btn-primary" onclick="sendTTS()">Speak</button>
+                </div>
+                <!-- Speech-to-Text Feature -->
+                <div class="col-md-6 text-center">
+                    <h4>Speech-to-Text</h4>
+                    <button class="btn btn-success mb-3" onclick="startSTT()">Start Listening</button>
+                    <p>Transcribed Text: <span id="sttOutput" class="text-muted"></span></p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer Section -->
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2024 DisabledIn. All Rights Reserved.</p>
+            <div>
+                <a href="#">About</a>
+                <a href="#">Privacy Policy</a>
+                <a href="#">Terms of Service</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Leaflet JS -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script>
+        // Initialize the map
+        var map = L.map('map').setView([20.5937, 78.9629], 5); // Center on India
+
+        // Add OpenStreetMap tiles
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 19,
+            attribution: '© OpenStreetMap contributors'
+        }).addTo(map);
+
+        // Add click event to map
+        map.on('click', function (e) {
+            var lat = e.latlng.lat;
+            var lng = e.latlng.lng;
+            document.getElementById('latitude').value = lat;
+            document.getElementById('longitude').value = lng;
+
+            // Add marker
+            if (window.currentMarker) {
+                map.removeLayer(window.currentMarker);
+            }
+            window.currentMarker = L.marker([lat, lng]).addTo(map);
+        });
+    </script>
+</body>
+<script>
+    const socket = io();
+
+    // Automatically read out page content
+    document.addEventListener("DOMContentLoaded", () => {
+        const pageContent = document.body.innerText;
+        socket.emit('speak', { text: pageContent });
+    });
+
+    // Handle navigation via STT
+    socket.on('navigate', (data) => {
+        if (data.error) {
+            alert(data.error);
+        } else {
+            window.location.href = data.url;
+        }
+    });
+</script>
+<script>
+function startSTT() {
+    // Display feedback to the user
+    const output = document.getElementById('sttOutput');
+    output.innerText = "Listening...";
+    socket.emit('listen'); // Trigger STT process on the server
+}
+
+// Update based on server feedback
+socket.on('stt_complete', (data) => {
+    const output = document.getElementById('sttOutput');
+    if (data.transcription) {
+        output.innerText = data.transcription; // Display transcribed text
+    } else {
+        output.innerText = "No speech detected, please try again.";
+    }
+});
+
+socket.on('navigate', (data) => {
+    if (data.error) {
+        alert(data.error);
+    } else {
+        window.location.href = data.url;
+    }
+});
+</script>
+
+</html>
